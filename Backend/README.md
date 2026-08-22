@@ -20,11 +20,11 @@ Create `Backend/.env` with local values:
 ```env
 PORT=5000
 NODE_ENV=development
-MONGO_URI=mongodb://127.0.0.1:27017/hydrox
+MONGO_URI=Your mongodb_URI
 JWT_SECRET=replace-with-a-long-random-secret
 JWT_EXPIRES_IN=7d
 DEFAULT_DAILY_GOAL_ML=2000
-CORS_ORIGIN=http://localhost:5173
+CORS_ORIGIN=replace with hosted backend url
 
 ADMIN_NAME=HydroX Admin
 ADMIN_EMAIL=admin@example.com
