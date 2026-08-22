@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 
 import { verifyToken } from "../utils/jwt.js";
+import User from "../models/User.js";
 
-export const protect = (
+export const protect = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -34,6 +35,19 @@ export const protect = (
     }
 
     const decoded = verifyToken(token);
+    const user = await User.findById(decoded.id).select(
+      "+tokenVersion"
+    );
+
+    if (
+      !user ||
+      user.tokenVersion !== (decoded.tokenVersion ?? 0)
+    ) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid or expired token",
+      });
+    }
 
     req.user = {
       id: decoded.id,

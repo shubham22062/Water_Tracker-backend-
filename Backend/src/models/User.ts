@@ -21,6 +21,7 @@ export interface IUser extends Document {
   dailyWaterGoal?: number;
 
   role: "user" | "admin";
+  tokenVersion: number;
 
   createdAt: Date;
   updatedAt: Date;
@@ -95,6 +96,12 @@ const userSchema = new Schema<IUser>(
       type: String,
       enum: ["user", "admin"],
       default: "user",
+    },
+
+    tokenVersion: {
+      type: Number,
+      default: 0,
+      select: false,
     },
   },
   {

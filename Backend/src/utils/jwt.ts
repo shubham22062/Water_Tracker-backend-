@@ -4,12 +4,17 @@ import { env } from "../config/env.js";
 
 interface JwtPayload {
   id: string;
+  tokenVersion?: number;
 }
 
-export const generateToken = (userId: string): string => {
+export const generateToken = (
+  userId: string,
+  tokenVersion = 0
+): string => {
   return jwt.sign(
     {
       id: userId,
+      tokenVersion,
     },
     env.JWT_SECRET,
     {

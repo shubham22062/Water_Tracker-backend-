@@ -54,7 +54,7 @@ The local base URL is `http://localhost:8000/api`. Configure `PORT` and `CORS_OR
 
 ### Authentication
 
-`POST /auth/register` and `POST /auth/login` return a JWT at `data.token`.
+`POST /auth/register` and `POST /auth/login` return a JWT at `data.token`. `POST /auth/logout` revokes previously issued tokens for that user; the client should also remove its locally stored token.
 
 ```http
 Authorization: Bearer <token>
@@ -77,6 +77,7 @@ Use this header for all protected requests. Never place tokens, passwords, or da
 | POST   | `/api/auth/register` | `{ "name": "Sam", "email": "sam@example.com", "password": "secret123" }` |
 | POST   | `/api/auth/login`    | `{ "email": "sam@example.com", "password": "secret123" }`                |
 | GET    | `/api/auth/me`       | None; requires a user token                                              |
+| POST   | `/api/auth/logout`   | None; requires a user token                                              |
 
 #### User profile
 
@@ -124,6 +125,7 @@ All routes require a token for a user whose database role is `admin`.
 - Passwords are hashed with `bcryptjs` before storage.
 - Password fields are excluded from normal user queries and responses.
 - Protected routes require a signed, non-empty bearer token.
+- Logout increments the user's token version, invalidating previously issued tokens for that user.
 - Admin routes verify the current user's database role on every request.
 - Users are restricted to their own profile and intake records.
 - CORS is limited to the configured `CORS_ORIGIN` and credentials are enabled.

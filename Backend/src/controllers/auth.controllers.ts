@@ -55,7 +55,8 @@ export const register = asyncHandler(
     });
 
     const token = generateToken(
-      user._id.toString()
+      user._id.toString(),
+      user.tokenVersion
     );
 
     return res.status(201).json({
@@ -119,7 +120,8 @@ export const login = asyncHandler(
     }
 
     const token = generateToken(
-      user._id.toString()
+      user._id.toString(),
+      user.tokenVersion
     );
 
     return res.status(200).json({
@@ -165,6 +167,28 @@ export const getMe = asyncHandler(
     return res.status(200).json({
       success: true,
       data: user,
+    });
+  }
+);
+
+export const logout = asyncHandler(
+  async (req: Request, res: Response) => {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
+    }
+
+    await User.findByIdAndUpdate(userId, {
+      $inc: { tokenVersion: 1 },
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Logout successful",
     });
   }
 );
