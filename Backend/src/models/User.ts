@@ -88,6 +88,7 @@ const userSchema = new Schema<IUser>(
     dailyWaterGoal: {
       type: Number,
       min: 0,
+      default:2000
     },
 
     role: {
