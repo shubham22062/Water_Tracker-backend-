@@ -13,7 +13,14 @@ const seedAdmin = async () => {
     });
 
     if (existingAdmin) {
+      existingAdmin.password = await bcrypt.hash(
+        env.ADMIN_PASSWORD,
+        12
+      );
+      existingAdmin.tokenVersion = existingAdmin.tokenVersion ?? 0;
+
       if (existingAdmin.role === "admin") {
+        await existingAdmin.save();
         console.log(
           "Admin already exists."
         );

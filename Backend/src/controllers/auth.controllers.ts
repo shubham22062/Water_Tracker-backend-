@@ -97,7 +97,7 @@ export const login = asyncHandler(
 
     const user = await User.findOne({
       email: normalizedEmail,
-    }).select("+password");
+    }).select("+password +tokenVersion");
 
     if (!user) {
       return res.status(401).json({

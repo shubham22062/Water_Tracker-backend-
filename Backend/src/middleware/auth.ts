@@ -41,7 +41,7 @@ export const protect = async (
 
     if (
       !user ||
-      user.tokenVersion !== (decoded.tokenVersion ?? 0)
+      (user.tokenVersion ?? 0) !== (decoded.tokenVersion ?? 0)
     ) {
       return res.status(401).json({
         success: false,
